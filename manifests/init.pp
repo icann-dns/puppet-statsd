@@ -3,6 +3,8 @@ class statsd (
   $ensure                            = $statsd::params::ensure,
   $node_module_dir                   = $statsd::params::node_module_dir,
   $nodejs_bin                        = $statsd::params::nodejs_bin,
+  $npm_bin                           = $statsd::params::npm_bin,
+  $environment                       = $statsd::params::environment,
 
   $port                              = $statsd::params::port,
   $address                           = $statsd::params::address,
@@ -24,6 +26,14 @@ class statsd (
   $flushInterval                     = $statsd::params::flushInterval,
   $percentThreshold                  = $statsd::params::percentThreshold,
   $flush_counts                      = $statsd::params::flush_counts,
+  $prefix_stats                      = $statsd::params::prefix_stats,
+  $keyNameSanitize                   = $statsd::params::keyNameSanitize,
+
+  $deleteIdleStats                   = $statsd::params::deleteIdleStats,
+  $deleteGauges                      = $statsd::params::deleteGauges,
+  $deleteTimers                      = $statsd::params::deleteTimers,
+  $deleteSets                        = $statsd::params::deleteSets,
+  $deleteCounters                    = $statsd::params::deleteCounters,
 
   $graphiteHost                      = $statsd::params::graphiteHost,
   $graphitePort                      = $statsd::params::graphitePort,
@@ -35,15 +45,19 @@ class statsd (
   $graphite_prefixSet                = $statsd::params::graphite_prefixSet,
   $graphite_globalSuffix             = $statsd::params::graphite_globalSuffix,
 
+  $influxdb_package_name             = $statsd::params::influxdb_package_name,
   $influxdb_host                     = $statsd::params::influxdb_host,
   $influxdb_port                     = $statsd::params::influxdb_port,
   $influxdb_database                 = $statsd::params::influxdb_database,
   $influxdb_username                 = $statsd::params::influxdb_username,
   $influxdb_password                 = $statsd::params::influxdb_password,
+  $influxdb_version                  = $statsd::params::influxdb_version,
   $influxdb_flush                    = $statsd::params::influxdb_flush,
   $influxdb_proxy                    = $statsd::params::influxdb_proxy,
   $influxdb_proxy_suffix             = $statsd::params::influxdb_proxy_suffix,
   $influxdb_proxy_flushInterval      = $statsd::params::influxdb_proxy_flushInterval,
+  $influxdb_include_statsd_metrics   = $statsd::params::influxdb_include_statsd_metrics,
+  $influxdb_include_influxdb_metrics = $statsd::params::influxdb_include_influxdb_metrics,
 
   $librato_email                     = $statsd::params::librato_email,
   $librato_token                     = $statsd::params::librato_token,
@@ -56,6 +70,7 @@ class statsd (
   $librato_includeMetrics            = $statsd::params::librato_includeMetrics,
   $librato_excludeMetrics            = $statsd::params::librato_excludeMetrics,
   $librato_globalPrefix              = $statsd::params::librato_globalPrefix,
+  $librato_alwaysSuffixPercentile    = $statsd::params::librato_alwaysSuffixPercentile,
 
   $stackdriver_apiKey                = $statsd::params::stackdriver_apiKey,
   $stackdriver_source                = $statsd::params::stackdriver_source,
@@ -63,6 +78,9 @@ class statsd (
   $stackdriver_sourcePrefixSeparator = $statsd::params::stackdriver_sourcePrefixSeparator,
   $stackdriver_sendTimerPercentiles  = $statsd::params::stackdriver_sendTimerPercentiles,
   $stackdriver_debug                 = $statsd::params::stackdriver_debug,
+
+  $repeater                          = $statsd::params::repeater,
+  $repeaterProtocol                  = $statsd::params::repeaterProtocol,
 
   $config                            = $statsd::params::config,
 
@@ -72,6 +90,7 @@ class statsd (
   $init_script                       = $statsd::params::init_script,
 
   $package_name                      = $statsd::params::package_name,
+  $package_source                    = $statsd::params::package_source,
   $package_provider                  = $statsd::params::package_provider,
 
   $dependencies                      = $statsd::params::dependencies,
@@ -90,6 +109,7 @@ class statsd (
     ensure   => $ensure,
     name     => $package_name,
     provider => $package_provider,
+    source   => $package_source
   }
 
   if $manage_service == true {

@@ -1,6 +1,6 @@
 {
   "name": "jdowning-statsd",
-  "version": "2.4.0",
+  "version": "2.6.0",
   "source": "https://github.com/justindowning/puppet-statsd",
   "author": "Justin Downing",
   "license": "Apache-2.0",
@@ -10,8 +10,7 @@
   "source": "https://github.com/justindowning/puppet-statsd.git",
   "issues_url": "https://github.com/justindowning/puppet-statsd/issues",
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.1.0 <5.0.0" },
-    { "name": "stahnma/epel", "version_requirement": ">1.0.0 <2.0.0" }
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=4.1.0 <5.0.0" }
   ],
   "operatingsystem_support": [
     {
@@ -40,7 +39,7 @@
     }
   ],
   "requirements": [
-    { "name": "pe", "version_requirement": "3.x" },
-    { "name": "puppet", "version_requirement": "3.x" }
+    { "name": "pe", "version_requirement": ">=3.0.0" },
+    { "name": "puppet", "version_requirement": ">=3.0.0" }
   ]
 }

@@ -6,6 +6,7 @@
   <% end -%>]
 
 , debug: <%= @debug %>
+, keyNameSanitize: <%= @keyNameSanitize %>
 , mgmt_address: "<%= @mgmt_address %>"
 , mgmt_port: "<%= @mgmt_port %>"
 , title: "<%= @statsd_title %>"
@@ -14,6 +15,23 @@
 , flushInterval: "<%= @flushInterval %>"
 , percentThreshold: [<%= @percentThreshold.join(', ') %>]
 , flush_counts: <%= @flush_counts %>
+, prefixStats: "<%= @prefix_stats %>"
+
+<% if defined? @deleteIdleStats -%>
+, deleteIdleStats: <%= @deleteIdleStats %>
+<% end -%>
+<% if defined? @deleteGauges -%>
+, deleteGauges: <%= @deleteGauges %>
+<% end -%>
+<% if defined? @deleteTimers -%>
+, deleteTimers: <%= @deleteTimers %>
+<% end -%>
+<% if defined? @deleteSets -%>
+, deleteSets: <%= @deleteSets %>
+<% end -%>
+<% if defined? @deleteCounters -%>
+, deleteCounters: <%= @deleteCounters %>
+<% end -%>
 
 <% if @backends.grep(/graphite/).any? -%>
 , graphitePort: "<%= @graphitePort %>"
@@ -40,6 +58,7 @@
     database: "<%= @influxdb_database %>",
     username: "<%= @influxdb_username %>",
     password: "<%= @influxdb_password %>",
+    version: "<%= @influxdb_version %>",
     flush: {
       enable: <%= @influxdb_flush %>
     },
@@ -47,7 +66,9 @@
       enable: <%= @influxdb_proxy %>,
       suffix: "<%= @influxdb_proxy_suffix %>",
       flushInterval: "<%= @influxdb_proxy_flushInterval %>"
-    }
+    },
+    includeStatsdMetrics: <%= @influxdb_include_statsd_metrics %>,
+    includeInfluxdbMetrics: <%= @influxdb_include_influxdb_metrics %>
   }
 <% end -%>
 
@@ -64,6 +85,7 @@
     includeMetrics: [<%= @librato_includeMetrics %>],
     excludeMetrics: [<%= @librato_excludeMetrics %>],
     globalPrefix: "<%= @librato_globalPrefix %>",
+    alwaysSuffixPercentile: <%= @librato_alwaysSuffixPercentile %>,
   }
 <% end -%>
 
@@ -71,11 +93,18 @@
 , stackdriver: {
     apiKey: "<%= @stackdriver_apiKey %>",
     source: "<%= @stackdriver_source %>",
-    sourceFromPrefix: "<%= @stackdriver_sourceFromPrefix %>",
+    sourceFromPrefix: <%= @stackdriver_sourceFromPrefix %>,
     sourcePrefixSeparator: "<%= @stackdriver_sourcePrefixSeparator %>",
-    sendTimerPercentiles: "<%= @stackdriver_sendTimerPercentiles %>",
-    debug: "<%= @stackdriver_debug %>"
+    sendTimerPercentiles: <%= @stackdriver_sendTimerPercentiles %>,
+    debug: <%= @stackdriver_debug %>
   }
+<% end -%>
+
+<% if @backends.grep(/repeater/).any? -%>
+, repeater: [<%= @repeater.map { |r| r.to_json }.join(", ") %>]
+  <% if defined? @repeaterProtocol -%>
+, repeaterProtocol: <%= @repeaterProtocol %>
+  <% end -%>
 <% end -%>
 
 <% @config.each do |k, v| -%>

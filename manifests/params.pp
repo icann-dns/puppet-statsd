@@ -3,6 +3,8 @@ class statsd::params {
   $ensure                            = 'present'
   $node_module_dir                   = '/usr/lib/node_modules'
   $nodejs_bin                        = '/usr/bin/node'
+  $npm_bin                           = '/usr/bin/npm'
+  $environment                       = []
 
   $port                              = '8125'
   $address                           = '0.0.0.0'
@@ -24,6 +26,14 @@ class statsd::params {
   $flushInterval                     = '10000'
   $percentThreshold                  = ['90']
   $flush_counts                      = true
+  $prefix_stats                      = 'statsd'
+  $keyNameSanitize                   = true
+
+  $deleteIdleStats                   = undef
+  $deleteGauges                      = undef
+  $deleteTimers                      = undef
+  $deleteSets                        = undef
+  $deleteCounters                    = undef
 
   $graphiteHost                      = 'localhost'
   $graphitePort                      = '2003'
@@ -35,15 +45,19 @@ class statsd::params {
   $graphite_prefixSet                = 'sets'
   $graphite_globalSuffix             = undef
 
+  $influxdb_package_name             = 'statsd-influxdb-backend'
   $influxdb_host                     = undef
   $influxdb_port                     = '8086'
   $influxdb_database                 = 'statsd'
   $influxdb_username                 = 'root'
   $influxdb_password                 = 'root'
+  $influxdb_version                  = '0.8'
   $influxdb_flush                    = true
   $influxdb_proxy                    = false
   $influxdb_proxy_suffix             = 'raw'
   $influxdb_proxy_flushInterval      = '10000'
+  $influxdb_include_statsd_metrics   = false
+  $influxdb_include_influxdb_metrics = false
 
   $librato_email                     = undef
   $librato_token                     = undef
@@ -56,6 +70,7 @@ class statsd::params {
   $librato_includeMetrics            = undef
   $librato_excludeMetrics            = undef
   $librato_globalPrefix              = undef
+  $librato_alwaysSuffixPercentile    = false
 
   $stackdriver_apiKey                = undef
   $stackdriver_source                = undef
@@ -64,11 +79,15 @@ class statsd::params {
   $stackdriver_sendTimerPercentiles  = false
   $stackdriver_debug                 = false
 
+  $repeater                          = undef
+  $repeaterProtocol                  = undef
+
   $config                            = { }
 
   $dependencies                      = undef
 
   $package_name                      = 'statsd'
+  $package_source                    = undef
   $package_provider                  = 'npm'
 
   case $::osfamily {

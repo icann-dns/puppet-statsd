@@ -12,7 +12,7 @@ This Puppet module will install [statsd](https://github.com/etsy/statsd/) on Deb
 
 ## Requirements
 
-This module assumes nodejs & npm is installed on the host, but will not do it for you. I recommend using [puppetlabs/nodejs](https://github.com/puppetlabs/puppetlabs-nodejs) to set this up.
+This module assumes nodejs & npm is installed on the host, but will not do it for you. I recommend using [puppet/nodejs](https://github.com/puppet-community/puppet-nodejs) to set this up.
 
 ## Usage
 ```puppet
@@ -31,6 +31,7 @@ You can install multiple backends. Supported backends include:
 * influxdb  
 * librato  
 * stackdriver  
+* repeater
 
 More information about the installation of each backend available in [manifests/backends.pp](https://github.com/justindowning/puppet-statsd/blob/master/manifests/backends.pp).
 
@@ -71,10 +72,35 @@ class { 'statsd':
 }
 ```
 
+### Repeater
+
+```
+class { 'statsd':
+  backends         => ['./backends/repeater'],
+  repeater         => [{"host" => 'my.statsd.host', port => 8125}],
+  repeaterProtocol => 'udp4'
+}
+```
+
 ## Testing
 
 ```
 bundle install
 bundle exec librarian-puppet install
 vagrant up
+```
+
+## Custom Nodejs Environment
+
+Use the `$environment` parameter to add custom environment variables or run scripts in the `/etc/default/statsd` file.  For example, you could enable Redhat's software collections and add a custom path like so:
+
+```
+class { 'statsd':
+  backends     => ['./backends/graphite'],
+  graphiteHost => 'localhost',
+  environment  => [
+    'source /opt/rh/nodejs010/enable',
+    'PATH=/opt/my/path:$PATH',
+  ],
+}
 ```
